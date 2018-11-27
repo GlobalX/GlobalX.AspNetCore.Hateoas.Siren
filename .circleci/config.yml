@@ -6,12 +6,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Get the version and add create an envrionment variable.
-          working_directory: src/GlobalX.AspNetCore.Hateoas.Siren
-          command: |
-            echo 'export VERSION=$(grep -oP "<Version>(.*)</Version>" GlobalX.AspNetCore.Hateoas.Siren.csproj |  cut -d ">" -f 2 | cut -d "<" -f 1)' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
           name: Package the library.
           command: dotnet pack --include-symbols --include-source -c Release -o ./nuget
           working_directory: src/GlobalX.AspNetCore.Hateoas.Siren
@@ -19,6 +13,7 @@ jobs:
           name: Publish to nuget
           working_directory: src/GlobalX.AspNetCore.Hateoas.Siren/nuget/
           command: |
-            echo $VERSION $CIRCLE_JOB
+            VERSION=$(grep -oP "<Version>(.*)</Version>" ../GlobalX.AspNetCore.Hateoas.Siren.csproj |  cut -d ">" -f 2 | cut -d "<" -f 1)
+            echo $VERSION
             dotnet nuget push GlobalX.AspNetCore.Hateoas.Siren.$VERSION.nupkg -k $NUGET_KEY -s https://api.nuget.org/v3/index.json
           
