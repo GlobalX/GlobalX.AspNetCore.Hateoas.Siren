@@ -5,6 +5,11 @@ jobs:
       - image:  microsoft/aspnetcore-build:2.0
     steps:
       - checkout
+      - run:
+          name: Get the version and add create an envrionment variable.
+          working_directory: src/GlobalX.AspNetCore.Hateoas.Siren
+          command: |
+            export VERSION=$(grep -oP "<Version>(.*)</Version>" GlobalX.AspNetCore.Hateoas.Abstractions.csproj |  cut -d ">" -f 2 | cut -d "<" -f 1) >> $BASH_ENV
       - run: 
           command: dotnet pack --include-symbols --include-source -c Release -o ./nuget
           working_directory: src/GlobalX.AspNetCore.Hateoas.Siren
