@@ -18,6 +18,6 @@ jobs:
           name: Publish to nuget
           working_directory: src/GlobalX.AspNetCore.Hateoas.Siren/nuget/
           command: |
-            echo $VERSION
+            echo $VERSION $CIRCLE_JOB
             dotnet nuget push GlobalX.AspNetCore.Hateoas.Siren.$VERSION.nupkg -k $NUGET_KEY -s https://api.nuget.org/v3/index.json
           
